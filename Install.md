@@ -1,38 +1,38 @@
-# Installation instructions for Spatialite GUI (Graphical User Interface)
+# A Spatialite GUI (Graphical User Interface = grafikus felhasználói felület) telepítési útmutatója
 
 ## Windows
 
-  * Download and install the [7-zip archive program](https://www.7-zip.org/) 64 bit should work for most people. 7-zip is a more sophisticated tool for zipping and unzipping files than the standard Windows tool.
-  * Download the [Spatialite Installer](http://www.gaia-gis.it/gaia-sins/windows-bin-amd64/) file called `spatialite-tools-5.0.1-win-amd64.7z`
-  * Download the [Spatialite GUI](https://ucdavis.box.com/s/4vgb1uq6v6bxw94blqoo7ubfv7lvtu4n) file called `spatialite_gui.zip`
-  * Use 7-zip to extract the files where you want them by right clicking on the file name in your browser. The unzipped folders should be at the same level in your file browser (i.e. these two folders should be inside the same folder). For Windows 11, you may need to choose "Show more options" first. Select "7-Zip" then "Extract files...", and then make your selections about where to put the files that will be extracted.
-  * Click the spatialite_gui.exe to use
+  * Töltse le és telepítse a [7-zip archiváló programot](https://www.7-zip.org/) A 64 bites verzió a legtöbb ember számára működik. A 7-zip fájlok tömörítésére és kibontására szolgáló szoftver, amely a beépített Windows tömörítőnél nagyobb tudású.
+  * Töltse le a [Spatialite Installer](http://www.gaia-gis.it/gaia-sins/windows-bin-amd64/) `spatialite-tools-5.0.1-win-amd64.7z` nevű tömörített fájlt.
+  * Töltse le a [Spatialite GUI](https://ucdavis.box.com/s/4vgb1uq6v6bxw94blqoo7ubfv7lvtu4n) `spatialite_gui.zip` nevű fájlt.
+  * A letöltött fájlok kicsomagolásához használja a 7-zip-et. A fájlkezelőben a fájl nevére jobb gombbal kattintva a megfelelő helyre. A kicsomagolt mappáknak ugyanazon a szinten kell lenniük a fájlböngészőben (azaz ennek a két mappának ugyanabban a mappában kell lennie). Windows 11 esetén előfordulhat, hogy először a „További beállítások megjelenítése” lehetőséget kell választania. Válassza a 7-Zip-et, majd a "Fájlok kibontása..." lehetőséget, majd válassza ki, hogy hova helyezze a kibontandó fájlokat.
+  * Kattintson a spatialite_gui.exe fájlra a munka megkezdéséhez.
+ 
+  
+  *Fent a közvetlenül használható fájlok linkjeit találja, hogy ne kelljen őket keresni.*
 
-  
-  *We've direct linked as it can be very hard to find the pre-made ready to use program.*
-  
-Another option is to install Spatialite GUI with the [MSYS2 Package Manager for Windows](https://packages.msys2.org/package/mingw-w64-x86_64-spatialite-gui?repo=mingw64).
+A Spatialite GUI könnyű használatára további lehetőség a [MSYS2 csomagkezelő Windowshoz](https://packages.msys2.org/package/mingw-w64-x86_64-spatialite-gui?repo=mingw64) telepítése.
 
 ## Mac
 
-  * Open a Terminal
-  * Install [Homebrew](https://brew.sh/)
+  * Nyissa meg a Terminalt!
+  * Telepítse a [Homebrew-et](https://brew.sh/)!
   
     ``` /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" ```
   
-  * Install Spatialite and Spatialite GUI
+  * Telepítse a Spatialite-t és Spatialite GUI-t!
   
    ```
        brew install spatialite-tools
        brew install gdal
        brew install spatialite-gui
    ```
-   *Instructions here courtesy of Ryan Peek, see the [notes](https://github.com/ryanpeek/spatiallite_demo) for more details*
+   * A fenti útmutató Ryan Peeknek köszönhető, további információkért tekintse meg a [megjegyzéseit](https://github.com/ryanpeek/spatiallite_demo)!*
 
 ## Linux
 
- * If you have a package manager look for spatialite-gui
- * To install from source, get it [here](https://www.gaia-gis.it/fossil/spatialite_gui/index).
+ * A csomagkezelőben keresse meg a spatialite-gui csomagot!
+ * A forráskódból történő telepítéshez töltse le [innen](https://www.gaia-gis.it/fossil/spatialite_gui/index)!
 
 
-**Now Back to the [workshop tutorial](README.md)**
+**Visszaléphet a [tanfolyamhoz](README.md)**
