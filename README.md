@@ -1,7 +1,7 @@
-# Spatial SQL with SpatiaLite
-An introductory workshop on Spatial SQL using SpatiaLite.  
+# Spatial SQL SpatiaLite programmal
+Spatial SQL bevezető tanfolyam SpatiaLite használatával.
 
-**Authors:** [Michele Tobias](https://github.com/MicheleTobias) & [Naomi Kalman](https://github.com/nbkalman)
+**Szerzők:** [Michele Tobias](https://github.com/MicheleTobias) & [Naomi Kalman](https://github.com/nbkalman)
 
 ## Workshop Description
 This workshop is intended to give participants an introduction to working with **spatial data** using SQL. We will work with a graphical user interface (GUI) and explore some examples of common analysis processes as well as present participants with resources for continued learning.  This workshop will give participants a solid foundation on which to build further learning.
@@ -12,6 +12,16 @@ By the end of this workshop, participants will be able to
 * Write queries to answer questions about spatial data
 * Understand the difference between attribute queries and geometry queries
 * View spatial tables and views in QGIS
+
+## A tanfolyamról
+A tanfolyam célja, hogy a résztvevők megismerkedjenek a **téradatokkal** való munkavégzéssel SQL használatával. Grafikus felhasználói felülettel (GUI) fogunk dolgozni, és megismerünk néhány példát a gyakori elemzési folyamatokra, valamint forrásokat biztosítunk a résztvevőknek a folyamatos tanuláshoz. Ez a tanfolyam jó kiindulási alapot ad a résztvevőknek a továbblépéshez.
+
+## Tanulási célok
+A tanfolyam végére a résztvevők képesek lesznek
+* Adatok importálása térbeli adatbázisba
+* Téradatokkal kapcsolatos kérdések megválaszolásához lekérdezések írására 
+* Különbséget tenni az attribútumlekérdezések és a geometriai lekérdezések között
+* Térbeli táblázatok és nézetek megtekintésére a QGIS-ben
 
 ## Prerequisites
 An introductory understanding of SQL is recommended, but not mandatory. For example, knowing how to compose a SELECT statement using SQL and the general concept of joining tables will serve learners well. For learners without a foundation in SQL, we recommend attending or reviewing the materials for DataLab's [Introduction to Databases and Data Storage Technologies](https://ucdavisdatalab.github.io/workshop_intro_to_data_storage/), which introduces the concept of databases, and [Intro to SQL for Querying Databases](https://ucdavisdatalab.github.io/workshop_intro_to_sql/), which teaches the basics of querying data using SQL.
