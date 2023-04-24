@@ -419,8 +419,8 @@ SELECT sum(ST_Area(ST_Buffer(geometry, 1000)))/1000000 FROM flowlines;
 Here, we take the sum of the area of the buffer of 1000 meters, then divide the whole thing by 1,000,000 to convert square meters to square kilometers.  Wow.  That's pretty complicated.  But I didn't have to make a bunch of intermediate files and add columns to an attribute table, then save a CSV, then sum it all up in Excel.  Now which option sounds crazier?  Perhaps you're starting to see some of the power of spatial SQL.
 
 
-# Conclusion
-Today we've gotten an introduction to Spatial Databases and Spatial SQL.  This is certainly not all you can do with these tools; we've barely scratched the surface!  To encourage you to keep learning, I've provided more resources below.  Additionally, a well-crafted Google search can return helpful posts and tutorials for learning new skills.
+# Záró gondolatok
+Ebben a cikkben bevezetőt kaptunk a téradatbázisokhoz és a térbeli SQL-hez. Ez természetesen nem minden, amit ezekkel az eszközökkel megtehet; alig kapkodtuk meg a felszínt! Az alábbiakban további forrásokat biztosítottam, hogy ösztönözzem Önt a tanulás folytatására. Ezenkívül egy jól kidolgozott Google-keresés hasznos bejegyzéseket és oktatóanyagokat adhat az új készségek elsajátításához.
 
 
 
