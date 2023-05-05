@@ -24,8 +24,7 @@ A tanfolyam végére a résztvevők képesek lesznek
 * Térbeli táblázatok és nézetek megtekintésére a QGIS-ben
 
 ## Prerequisites
-An introductory understanding of SQL is recommended, but not mandatory. For example, knowing how to compose a SELECT statement using SQL and the general concept of joining tables will serve learners well. For learners without a foundation in SQL, we recommend attending or reviewing the materials for DataLab's [Introduction to Databases and Data Storage Technologies](https://ucdavisdatalab.github.io/workshop_intro_to_data_storage/), which introduces the concept of databases, and [Intro to SQL for Querying Databases](https://ucdavisdatalab.github.io/workshop_intro_to_sql/), which teaches the basics of querying data using SQL.
-
+Az SQL bevezető ismerete ajánlott, de nem kötelező. Például a SELECT utasítások összeállításának ismerete SQL használatával és a táblák összekapcsolásának általános ismerete jó segítség lehet. Az SQL alapismeretekkel nem rendelkező tanulók számára javasoljuk, hogy tekintsék meg a DataLab [Introduction to Databases and Data Storage Technologies] (https://ucdavisdatalab.github.io/workshop_intro_to_data_storage/) anyagait, amely bemutatja az adatbázisok fogalmát, és [ Intro to SQL for Querying Databases] (https://ucdavisdatalab.github.io/workshop_intro_to_sql/), amely megtanítja az adatok SQL használatával történő lekérdezésének alapjait.
 
 ## Software
 
