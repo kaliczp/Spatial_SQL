@@ -209,57 +209,57 @@ Az előbbiekben megvizsgáltunk néhány lehetőséget a nem térbeli adatok lek
 
 A következőkben megismerjük a térbeli lekérdezéseket.  A térbeli lekérdezések jellemzően a tábla geometriai oszlopán működnek.  Néhány esetben az oszlop megnevezése "geometry helyett" egyszerűen csak "geom", de nem ez lényeges, hanem a benne tárolt adatok.
 
-### View Geometry
-Let's start understanding spatial queries by looking at the geometries column: 
+### Geometria megtekintése
+Kezdjük a térbeli lekérdezések megértését a geometria oszlop megtekintésével: 
 
 ```SQL 
 SELECT geometry FROM flowlines;
 ``` 
 
-That result doesn't tell us very much information since a BLOB is not human-readable.  Let's look at it in plain text so we can read it:
+Ez az eredmény nem mond túl sok információt, mivel a BLOB emberileg nem értelmezhető.  Ezért nézzük meg egyszerű szövegben, hogy el értelmezni tudjuk:
 
 ```SQL 
 SELECT ST_AsText(geometry) FROM flowlines;
 ``` 
 
-*ST_AsText()* is a function that operates on the geometry colum to let us see the geometry string in human-readable form.  This isn't very useful most of the time, but perhaps it's comforting to know it's there.  *Note: You can make columns in the results tables larger by placing your mouse cursor over the edge of the column and dragging it out once the expander handle appears (it looks like two arrows pointing different directions).*
+A *ST_AsText()* egy függvény, amely a geometria oszlopon hívható meg annak érdekében, hogy a geometriai karakterláncot ember által is értelmezhető formátumban láthassuk.  Ez legtöbbször nem túl hasznos, de talán megnyugtató a tudat, hogy létezik.  *Megjegyzés: Az eredménytáblázat oszlopai átméretezhetők, ha az egérmutatót az oszlop széle fölé helyezzük, és a bővítő kurzor megjelenése után kihúzzuk. (két ellentétes irányba mutató nyílként jelenik meg).*
 
-### Length
-Let's do an analysis that you might come across.  Let's get the lengths of each of the *flowlines*: 
+### Hossz
+Csináljunk egy elemzést, amivel gyakran találkozhatunk.  Kérjük le a *flowlines* adattábla elemeinek hosszát: 
 ```SQL
 SELECT pk_uid, ST_Length(geometry) FROM flowlines;
 ``` 
 
-What are the units of the length query?  The units are meters because the units for the projection (California Albers; SRID 3310) are meters.
+Mi a hossz lekérdezésének mértékegysége?  Méter, mivel az alkalmazott vetületnek (California Albers; SRID 3310) is méter az alapmértékegysége.
 
-We just found the length of the individual *flowlines*.  That was not a very informative query.  It would be more useful to know what the total length of the lines are summed by their fcode.  
+Ezzel megkaptuk a *flowlines* elemeinek hosszát.  Ez nem volt túl informatív lekérdezés.  Hasznosabb lenne tudni, mekkora a vízfolyások teljes hossza az fcode mező összegzése alapján.  
 
 ```SQL
 SELECT fcode, SUM(ST_Length(geometry)) FROM flowlines GROUP BY fcode;
 ```
 
-### Area
+### Terüelt
 
-First, let's look at our watershed polygon table so we know what's in it:
+Először is vessünk egy pillantást a watershed poligon táblázatunkra:
 
 ```SQL
 SELECT * FROM watersheds;
 ```
 
-Now, let's look at an example to get the area of the *watershed* polygons: 
+Most nézzünk egy példát a *watershed* poligonok területének lekérdezésére: 
 
 ```SQL
 SELECT name, ST_Area(geometry) FROM watersheds;
 ``` 
 
-Remember that if you don't like the resulting column headings, you can alias them with *AS*. Note that this only changes the column name in the query output, not the underlying table.
+Ne feledjük, hogy ha nem tetszenek az eredményül kapott oszlopmegnevezések, akkor az *AS* záradékkal átnevezhetjük őket.. Azonban tartsuk észben azt, hogy ez csak a lekérdezés eredményében módosítja az oszlop nevét, az alapul szolgáló táblában nem.
 
 ```SQL
 SELECT name, ST_Area(geometry) AS area FROM watersheds;
 ``` 
 
-## Projections:
-Because we are working with spatial data, we need to know how to handle projections.
+## Vetületek
+Mivel térbeli adatokkal dolgozunk, tudnunk kell kezelni a vetületeket.
 
 ### Set the Projection
 When you imported your data into Spatialite, it asked you what the SRID (EPSG Code) was for your data.  It's easy to forget to do this or to put in the wrong one if you're in a hurry.  If you discover that you've made a mistake, you don't need to re-import the table; you can set the SRID to the correct projection with an update command.  
