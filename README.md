@@ -78,107 +78,114 @@ We'll be working with SpatiaLite, because it works on all the common computer op
 
 
 ---------------------------------------------
-# Hands-On Tutorial
+# Gyakorlati útmutató
 
 
-## Data
+## Adatok
 
-The data we'll be working with is a set of hydrology-related data for the San Francisco Bay Watershed.
+Az adatok, amelyekkel dolgozunk, a San Francisco-öböl vízgyűjtőjére vonatkozó hidrológiával kapcsolatosak.
 
-You'll need to download the following data from the data folder in this repository or from [this Box folder](https://ucdavis.box.com/s/wb5ui86q8z7ppylvcqb8o8pqqawpsj43) (click the download button in the upper right corner to download all the data in one .zip file):
+A következő adatfájlokat kell letölteni az adatmappából, vagy [innen](https://ucdavis.box.com/s/wb5ui86q8z7ppylvcqb8o8pqqawpsj43) (kattintsunk a letöltés gombra a jobb felső sarokban az összes adat .zip fájblan való letöltéséhez):
 
-* Watershed Boundaries (Polygons)
-* Watershed Centroids (Points)
-* Rivers (Lines)
+* Watershed Boundaries (vízgyűjtő határok)(poligon)
+* Watershed Centroids (vízgyűjtő súlypontok) (pont)
+* Rivers (folyók) (vonal)
 
-If you downloaded a .zip file, be sure to unzip it.  
+Ha a .zip fájlt lett letöltve, használat előtt ki kell csomagolni.
 
 ![alt text](https://github.com/MicheleTobias/Spatial_SQL/blob/master/images/DataPreview.png)
 
 
-## Starting SpatiaLite
-Let's start by opening Spatialite:
+![alt text](https://github.com/MicheleTobias/Spatial_SQL/blob/master/images/DataPreview.png)
 
-1. In your computer's file explorer, navigate to the folder where you downloaded your SpatiaLite install files.
-1. Start Spatialite by running the `spatialite_gui.exe` file in this folder.
 
-## Make a Database
-You can think of a database as a folder in which you keep tables that are related to each other.  You don't want to put data in this database that isn't related to the other data (you could, but that's not the point of a database).
+## A SpatiaLite elindítása
+Indítsuk el a SpatiaLite programot:
 
-We'll need to make a new empty database to keep our spatial tables in:
+1. A számítógép fájlkezelőjében keressük meg a mappát, ahová letöltöttük a telepítési fájlokat.
+1. Indítsuk el a SpatiaLite programot a `spatialite_gui.exe` fájlra kattintva.
 
-1. Click the "Creating a new (empty) SQLite Database" ![alt text](https://github.com/MicheleTobias/Spatial_SQL/blob/master/images/SpatiaLite_Button_NewDB.PNG)  *Note: several buttons have similar names.  DO NOT make a Memory-DB. It's not the same thing.*
-1. Navigate to where you would like to keep your database, perhaps in the folder where you downloaded the data for this workshop.  Name your database *sfbay.sqlite* because we'll be working with San Francisco Bay data.  Yes, it should be all lowercase. Click OK.
+
+## Adatázis létrehozása
+Az adatbázis felfogható úgy is, mint egy mappa, amely az egymáshoz kapcsolódó táblákat tartalmazza.  Ebbe az adatbázisba nem töltünk fel olyan adatokat, amelyek nem kapcsolódnak a többi adathoz (lehetne, de nem ez a lényege egy adatbázisnak).
+
+Létrehozunk egy új, üres adatbázist, melyben tárolhatjuk az adattáblákat:
+
+1. Kattintsunk a "Creating a new (empty) SQLite Database" ("Új (üres) SQLite adatbázis létrehozása") ikonra ![alt text](https://github.com/MicheleTobias/Spatial_SQL/blob/master/images/SpatiaLite_Button_NewDB.PNG)  *Megjegyzés: néhány gombnak hasonló nevei vannak.  NE készítsünk Memory-DB adatbázist. Nem ugyanaz.*
+1. Keressük ki a mappát, ahová menteni szeretnénk az adatbázisunkat, például a mappa, ahová letöltöttük a mintaadatokat.  Nevezzük el az adatbázist a következőre: *sfbay.sqlite*, mivel a San Francisco Bay (San Francisco-öböl) adataival fogunk dolgozni.  Igen, mind kisbetűvel. Kattintsunk az OK gombra.
 
 ![alt text](https://github.com/MicheleTobias/Spatial_SQL/blob/master/images/SpatiaLite_Inteface_ConnectedDB.PNG)
 
-Note that Spatialite can only connect to one database at a time, so if you want to work with another database, disconnect this one.
+A Spatialite egyszerre egy adatbázishoz tud csatlakozni, ezért ha egy másik adatbázissal kívánunk dolgozni, előbb le kell csatlakozni a jelenlegiről.
 
-## Load some data to the database
 
-Let's add some data to our database:
+## Az adatbázis feltöltése adatokkal
 
-1. Click the "Load Shapefile" button. ![alt text](https://github.com/MicheleTobias/Spatial_SQL/blob/master/images/SpatiaLite_Button_LoadShapefile.PNG)  *Note: DO NOT load a virtual shapefile.*
-1. Navigate to your workshop data folder.
-1. Select the *Flowlines.shp* file and click *Open*.
-1. In the *Table Name* box, type *flowlines* for the name of our new table.
-1. In the *SRID* box, type 3310 because the projection for this data is California Albers (NAD38) which has the SRID of 3310.
-2. In the *Column Names* section, pick "Convert to Lowercase" so all of our column names will be lowercase letters
-3. For *DBF DATE Values*, choose "as PlainText strings" so our dates will be human readable
-4. For *Primary Key Column*, choose "Automatic". This option will create an incremented pk_uid column to ensure we have a primary key for our table.
-5. Review the other options, but you can leave the defaults as they are.  Click *OK* when you're done.
+Adjunk hozzá adatokat az adatbázisunkhoz:
 
-You can repeat this process to add the other two datasets.  Call the *WBDHU8_Points_SF* table *centroids* and *WBDHU8_SF* table *watersheds*. The other parameters will be the same as for the flowlines table.
+1. Kattintsunk a "Load Shapefile" ("Shapefile betöltése") gombra. ![alt text](https://github.com/MicheleTobias/Spatial_SQL/blob/master/images/SpatiaLite_Button_LoadShapefile.PNG)  *Megjegyzés: NE virtuális shapefile-t töltsünk be.*
+1. Keressük ki a mappát, ahová letöltöttük az adatokat.
+1. Válasszuk ki a *Flowlines.shp* fájlt és kattintsunk az *Open* gombra.
+1. A *Table Name* ("Táblázat megnevezése") szövegdobozba írjuk be: *flowlines* ("áramlási vonalak"). Ez lesz az adattáblánk neve.
+1. Az *SRID* szövegdobozba beíradnó szám 3310, mert az adatok California Albers (NAD38) vetületi rendszerben vannak megadva, melynek SRID azonosítója 3310.
+2. A *Column Names* ("Oszlopok megnevezése") résznél válasszuk ki a "Convert to Lowercase" ("Konvertálás kisbetűssé") opciót, így minden oszlop megnevezése kisbetűs lesz.
+3. A *DBF DATE Values* ("DBF dátumértékek") résznél válasszuk az "as PlainText strings" ("Egyszerű karakterláncok") opciót, így a dátumok emberileg olvashatók lesznek.
+4. A *Primary Key Column* ("Elsődleges kulcs oszlop") résznél válasszuk az "Automatic" ("Automatikus") lehetőséget. Ez készíteni fog egy növekvő pk_uid oszlopot annak érdekében, hogy biztosan legyen elsődleges kulcs az adattáblánkban.
+5. Tekintsük meg az egyéb beállításokat, de az alapértelmezett értékek maradhatnak.  Ha végeztünk, kattintsunk az *OK* gombra.
 
-You should see your three tables listed in the panel on the left.  Congratulations!  You now have a database with files related to the San Francisco Bay's watersheds!
+A fenti lépéseket megismételve hozzáadhatjuk a másik két rend adatot.  Nevezzük el a *WBDHU8_Points_SF* táblát *centroids*-nak ("centroidok") és a *WBDHU8_SF* táblát *watersheds*-nek ("vízgyűjtők"). A többi paraméter megegyezik a flowlines tábla paramétereivel.
 
-## The SQL Window
+A bal oldali panelben így már három táblázatot kell látnunk.  Gratulálunk!  Van egy adatbázunk, mely a SanFrancisco-öböllel kapcsolatos adatokat tartalmaz.
 
-Now we're just about ready to do some analysis with our database.  You may need to expand the Spatialite window by dragging the lower right corner of the window out so you can see everything.
 
-A **query** is a request for information from the database.  You will type your queries into the big blank box at the top right of the window.  
+## Az SQL ablak
 
-You'll run the query by clicking the *Execute SQL Statement* button to the right of the query box.
+Készen állunk arra, hogy elemzést végezzünk adatbázisunkkal.  Előfordulhat, hogy ki kell bontanunk a Spatialite ablakot az ablak jobb alsó sarkának kihúzásával, hogy minden látható legyen.
 
-The results of the query will appear in the box below.  Sometimes the results will be a table; sometimes it will be a message.
+Egy **query** ("lekérdezés") lényegében információk lekérése az adatbázisból.  A lekérdezéseket az ablak jobb felső sarkában található nagy üres mezőbe kell beírni.  
 
-## Non-spatial Queries
+A lekérdezés futtatásához kattintsunk az *Execute SQL Statement* ("SQL utasítás végrehajtása") gombra a lekérdezés mezőtől jobbra.
 
-A query has a structure.  The most common one you'll see today is a "select statement".  These start with the SELECT command, followed by the information you want to know, then the name of the table you want the information from, and finally (and optionally) other parameters that limit the results or provide some important caveats.  All queries end with a semicolon.
+A lekérdezés eredménye az alsó mezőben jelenik meg.  Az eredmény lehet egy táblázat, vagy egy üzenet.
 
-Non-spatial queries are queries that don't involve the geometry column (the spatial information) of our table.
 
-We'll start by investigating our *flowlines* data.  The *flowlines* are linear features that carry water from one place to another.  Some are natural features like rivers or streams, others are human-made like canals.
+## Nem térbeli lekérdezések
 
-### Let's look at the whole table:
+A lekérdezéseknek adott a szerkezete. A leginkább használt a "select" ("kiválasztás") parancs.  Ezek a SELECT paranccsal kezdődnek, ezt követi a lekérdezni kívánt információ, majd annak a táblának a neve, amelyből lekérdezzük, végül (opcionálisan) egyéb paraméterek, amelyek korlátozzák az eredményt, vagy fontos figyelmeztetéseket tartalmaznak.  Minden lekérdezést pontosvesszővel kell lezárni.
+
+A nem térbeli lekérdezések olyan lekérdezések, amelyek nem tartalmazzák a táblázatunk geometriai tulajdonságokat tartalmazó oszlopát (azaz a koordinátákat).
+
+Kezdjük a *flowlines* adatainak vizsgálatával. Az *flowlines* tábla lineáris elemeket tartalmaz, amelyek a vizet az egyik helyről a másikra szállítják. Némely ezek közül természetes vízfolyás, például folyók vagy patakok, mások pedig ember alkotta, mint például a csatornák.
+
+### Nézzük a teljes táblázatot:
 
 ```SQL 
 SELECT * FROM flowlines; 
 ```
 
-The asterisk (\*) means "everything" or "give me all the columns".  You could read the query as "Select everything from the *flowlines* table."
+A csillag (\*) azt jelenti, hogy "minden", vagyis "kérem az összes oszlopot".  A lekérdezés olasható úgy is, hogy "Válasszunk ki mindent a *flowlines* táblából."
 
-The result should look very much like an attribute table you might expect to see in a graphical GIS, but with one additional column.  The import process added *geometry* field.  The *geometry* field contains information that allows the database tool to know where that particular object should be located in space, but unfortunately, it doesn't look like anything we understand as humans.  We'll learn to deal with this column more in a little while.
+Az eredménynek úgy kell kinéznie, mint egy szokványos, grafikus GIS-ben látott attribútumtáblázat, egy további oszloppal.  A beolvasási folyamat hozzáadott egy *geometry* mezőt.  A *geometry* mező olyan információkat tartalmaz, amelyek közlik az adatbáziskezelővel, hogy hol kell elhelyezkednie az adott objektumnak a térben, de sajnos emberileg nehezen érthető.  A későbbiekben többet megtudhatunk erről az adatmezőről.
 
-NOTE: traditionally, reserved words like `SELECT` are writen in all caps, while table and column names are lower case, however, if you don't follow these rules, your code will still work.
+Megjegyzés: hagyományosan a szintaxisban részt vevő szavak, például a `SELECT', csupa nagybetűvel íródnak, míg a táblázatok és oszlopok nevei kisbetűvel, azonban ha nem tartjuk be ezeket a szabályokat, a kód úgy is működni fog.
 
-### Add a WHERE clause: 
+### WHERE záradék hozzáadása: 
 
 ```SQL
 SELECT * FROM flowlines WHERE ftype = 460; 
 ``` 
 
-This query limits our results to just the rows where the number in the *ftype* column is 460, which corresponds to the natural rivers and streams (not canals).  "Where" in this case does **NOT** indicate location, but rather a condition of the data.
+Ez a lekérdezés azokra a sorokra korlátozza az eredményt, ahol az *ftype* oszlop értéke 460, ami a természetes folyóknak és patakoknak (nem csatornáknak) felel meg..  A "where" (ahol) ebben az esetben **NEM** helyszínt, hanem egy feltételt közvetít.
 
-### Add a function: 
+### Függvény hozzáadása: 
 
 ```SQL
 SELECT COUNT(pk_uid) FROM flowlines WHERE ftype = 460; 
 ``` 
 
-Here we've added the function COUNT().  So we've asked the database tool to count all of the IDs but only if they have an ftype of 460.
+Itt hozzáadtuk a COUNT() (számol) függvényt.  Megkértük az adatbáziskezelőt, hogy számolja meg az összes ID-t, ahol az ftype értéke 460.
 
-### Summarize Data
+### Adatok összegzése
 
 What if we wanted to know how many lines there were of each *ftype*?
 
@@ -186,21 +193,21 @@ What if we wanted to know how many lines there were of each *ftype*?
 SELECT ftype, COUNT(pk_uid) FROM flowlines GROUP BY ftype;
 ```
 
-Here, I've asked for a table with the columns *FTYPE* and the count of each *pk_uid*, and finally that it should summarize (group by) the *FTYPE*.
+Itt lekértük egy táblázatból az *ftype* oszlopot és az összes *pk_uid* darabszámát, végül pedig csoportosítjuk (group by) az *ftype* értékei szerint.
 
-If I don't like the column name that it automatically generates - `COUNT(pk_uid)` - I can give it an alias with the AS command:
+Ha nem tetszik az automatikusan generált oszlopmegnevezés - `COUNT(pk_uid)` - az AS paranccsal ezt megváltoztathatjuk:
 
 ```SQL 
 SELECT ftype, COUNT(pk_uid) AS count_lines FROM flowlines GROUP BY ftype; 
 ```
 
-This is especially handy if you're making a table for people unfamiliar with your data or SQL or if you need the column name to be something specific.
+Ez különösen akkor hasznos, ha olyan emberek számára készítünk táblázatot, akik nem ismerik az adatokat vagy az SQL-t, vagy ha az oszlop konkrét névvel kell rendelkezzen.
 
-We've just looked a few options for querying non-spatial data.  See the [Intro to SQL Workshop](https://github.com/MicheleTobias/Workshop-SQL) for more.
+Az előbbiekben megvizsgáltunk néhány lehetőséget a nem térbeli adatok lekérdezésére.  Bővebb információkért kattints a következő linkre: [Intro to SQL Workshop](https://github.com/MicheleTobias/Workshop-SQL).
 
-## Basic Spatial Query Examples:
+## Példák alapvető térbeli lekérdezésekre:
 
-Now we'll learn about spatial queries.  Spatial queries typically operate on the geometry column of a table.  Sometimes it will be called "geom" instead of "geometry", but what matters is the data it contains.
+A következőkben megismerjük a térbeli lekérdezéseket.  A térbeli lekérdezések jellemzően a tábla geometriai oszlopán működnek.  Néhány esetben az oszlop megnevezése "geometry helyett" egyszerűen csak "geom", de nem ez lényeges, hanem a benne tárolt adatok.
 
 ### View Geometry
 Let's start understanding spatial queries by looking at the geometries column: 
@@ -373,65 +380,65 @@ Refresh your table list to see that rivers_tomales is now a spatial view.
 ```SELECT * FROM rivers_tomales;``` to see your new view.  It will function just like a table.
 
 
-## Viewing Tables in QGIS
+## Táblák megjelenítése QGIS-ben
 
-Tables and views are usefull, but this is spatial data so it might be nice to look at the data in map form.  We can look at our spatial tables and views directly in QGIS.  Let's look at some of our tables and views:
+A táblázatok és nézetek hasznosak, de ezek térbeli adatok, így sokkal szemléletesebb, ha térkép formájában tekintjük az adatokat. A térbeli táblázatainkat és nézeteinket közvetlenül a QGIS-ben tekinthetjük meg. Nézzünk néhány táblázatot és nézetet:
 
-1. Open QGIS and start a new project
-1. In the Browser Panel (usually on the left by default... add it if it's missing: *View* menu -> *Panels* -> *Browser Panel*).  Scroll down to find the SpatiaLite icon.  If you've previously connected SpatiaLite tables, there will be a small triangle to expland the list.  If not, it's just the icon and text label.
-1. Right click on the Spatialite section in the Browser Panel and select *New connection*
-1. Navigate to and select your *sfbay.sqlite* database.  Click *Open*.
-1. In the Browser Panel, expand your *sfbay*.sqlite database to see the tables and views.  It will list the tables we created plus some default tables that come with the database that we don't need to worry about.
-1. Double click the tables or views to add them to the map canvas.  
+1. Nyissuk meg a QGIS-t és hozzunk létre egy új projektet.
+1. A Browser Panelben (Böngésző panel) (általában a bal oldalon... adjuk hozzá, ha hiányzik: *View* (Nézet) menü -> *Panels* (Panelek) -> *Browser Panel* (Böngésző)) görgessünk le a SpatiaLite ikonhoz.  Ha korábban már csatlakoztattunk SpatiaLite táblákat, akkor egy kis háromszög jelenik meg a lista kibontásához.  Ha nem, akkor csak az ikon és a szövegcím.
+1. Jobb klikk a SpatiaLite szakaszra, majd válasszuk ki a *New connection* (Új kapcsolat) opciót.
+1. Keressük meg és válasszuk ki a *sfbay.sqlite* adatbázist.  Kattintsunk az *Open* (Megnyitás) gombra.
+1. Nyissuk ki a *sfbay*.sqlite adatbázist, hogy lássuk a táblákat és a nézeteket.  Ez listázza az általunk létrehozott táblákat, valamint az alapértelmezett táblákat, amelyek az adatbázishoz tartoznak, és amelyek miatt nem kell aggódnunk.
+1. Kattintsunk duplán a táblázatokra vagy nézetekre a térképnézethez való hozzáadáshoz.
 
-**Note:** Tables and (especially) views with a lot of records will take a while to load.  If a dialog asks about the CRS transformation you want to use, select an option that makes sense for your data, then click *OK*.  I advise adding one at a time and saving your QGIS project after each table addition just in case it crashes.
+**Megjegyzés:** A sok rekordot tartalmazó táblázatok és (főleg) nézetek betöltése eltart egy ideig.  Ha egy párbeszédpanel a használni kívánt CRS-transzformációra kérdez rá, válasszuk ki az adatoknak megfelelő opciót, majd kattintsunk az *OK* gombra. Érdemes egyesével hozzáadni a táblakat, majd menteni a QGIS-projektet minden tábla hozzáadása után, így elkerülhetők a program esetleges összeomlásából adódó kellemetlenségek.
 
-Now you can access the symbology, labels, and other standard tools in the *Layer Properties* for each layer, just as you would any other spatial dataset in QGIS.
+Mostantól elérhetők a szimbólumok, címkék és egyéb szabványos eszközök a *Layer Properties* (Tulajdonságok) fülön, csakúgy, mint bármely más térbeli adatkészlethez a QGIS-ben.
 
-**NOTE:** QGIS' DB Manager tool is an alternative to Spatialite that comes standard with QGIS and can connect to a number of spatial databases.
-
-
-## More Spatial Analysis:
-Not surprisingly, you can use a spatial database to do more than just get lengths and areas of existing geometries, or change projections.  Let's go back to Spatialite and explore some more spatial analysis possibilities.
+**Megjegyzés:**  A QGIS DB Manager eszköze a Spatialite alternatívája, amely a QGIS alapfelszereltségéhez tartozik, és számos geoadatbázishoz képes csatlakozni.
 
 
-### Distance
-Let's find out which watershed is closest to the city of San Francisco.  We could go about this a number of ways, but let's find the distance from the city's center point to the centroid of each watershed:
+## További térbeli elemzések:
+Nem meglepő, hogy a geoadatbázisok segítségével többet is tehetünk, mint a meglévő geometriák hosszának és területeinek lekérését, vagy a vetületek megváltoztatását. Térjünk vissza a Spatialite-hoz, és fedezzünk fel néhány további térelemzési lehetőséget.
+
+
+### Távolság
+Derítsük ki, hogy melyik vízgyűjtő van a legközelebb San Francisco városához. Ezt többféleképpen is megtehetnénk, de nézzük meg a távolságot a város középpontja és az egyes vízgyűjtők súlypontja között:
 
 ```SQL
 SELECT ST_Distance(MakePoint(37.7749, -122.4194, 3310), centroids.geometry) 
 FROM centroids;
 ```
 
-Here we used `MakePoint()` to turn a set of latitude/longitude coordinates into a format that  the database tool understands in the CA Albers projection (EPSG 3310), then put the results into the `Distance()` function.
+Itt a `MakePoint()` segítségével a szélességi/hosszúsági koordináták halmazát olyan formátumra alakítottuk, amelyet az adatbázis-kezelő értelmezni tud a CA Albers vetületben (EPSG 3310), majd az eredményeket elhelyezi a `Distance()` függvényben.
 
-How could you make this table more informative?  Could you add or rename some columns?
+Hogyan tehetnénk ezt a táblázatot még informatívabbá? Hozzá tudnánk adni vagy átnevezni néhány oszlopot?
  
 
-### Buffer & Nesting Functions
-One interesting thing about SQL is that you can nest functions to do a series of functions in one query like you just saw above, but it can get more complex.  For example, maybe I want to find out the area (in square kilometers) within 1 kilometer of all the *flowlines*.
+### Védőzóna & egymásba ágyazott függvények
+Az SQL egyik érdekessége, hogy a függvényeket egymásba ágyazhatjuk, hogy egy lekérdezés függvények sorozatát hajtsa végre, ahogyan azt fentebb is látható volt, azonban ez egyre bonyolultabb lehet. Például szeretnénk megtudni az összes *áramlási vonal* 1 kilométeres körzetében elhelyezkedő területet (négyzetkilométerben).
 
 ```SQL
 SELECT sum(ST_Area(ST_Buffer(geometry, 1000)))/1000000 FROM flowlines;
 ```
 
-Here, we take the sum of the area of the buffer of 1000 meters, then divide the whole thing by 1,000,000 to convert square meters to square kilometers.  Wow.  That's pretty complicated.  But I didn't have to make a bunch of intermediate files and add columns to an attribute table, then save a CSV, then sum it all up in Excel.  Now which option sounds crazier?  Perhaps you're starting to see some of the power of spatial SQL.
+Itt vesszük az 1000 méteres védőzónák területének összegét, majd az egészet elosztjuk 1 000 000-rel, hogy a négyzetmétert négyzetkilométerré alakítsuk át. Nahát. Ez elég bonyolult. De nem kellett egy csomó köztes fájlt készítenünk és oszlopokat hozzáadnunk egy attribútumtáblához, lementenünk egy CSV-fájlt, majd mindezt Excelben összegeznünk. Most melyik opció hangzik őrültebben? Talán kezdjük már érezni a térbeli SQL erejét.
 
 
 # Záró gondolatok
-Ebben a cikkben bevezetőt kaptunk a téradatbázisokhoz és a térbeli SQL-hez. Ez természetesen nem minden, amit ezekkel az eszközökkel megtehet; alig kapkodtuk meg a felszínt! Az alábbiakban további forrásokat biztosítottam, hogy ösztönözzem Önt a tanulás folytatására. Ezenkívül egy jól kidolgozott Google-keresés hasznos bejegyzéseket és oktatóanyagokat adhat az új készségek elsajátításához.
+Ebben a cikkben bevezetőt kaptunk a geoadatbázisok és a térbeli SQL világába. Ez természetesen nem minden, amit ezekkel az eszközökkel megtehetünk; még csak alig-alig kapargattuk a felszínt! Az alábbi linkeken további információk érhetők el a geoadatbázisok lehetőségeiről. Ezenkívül egy jól kidolgozott Google-keresés hasznos információkat és oktatóanyagokat nyújthat az új készségek elsajátításához.
 
 
 
-# Additional Resources:
+# Egyéb források:
 
-## Spatial SQL Resources:
+## Térbeli SQL-lel kapcsolatos linkek:
 
 [SpatiaLite Function Reference List](http://www.gaia-gis.it/gaia-sins/spatialite-sql-4.2.0.html)
 
 [SpatiaLite Cookbook](https://www.gaia-gis.it/spatialite-3.0.0-BETA/spatialite-cookbook/index.html)
 
-## General Slides & Tutorials:
+## Általános diasorok & Oktatóanyagok:
 
 [Todd Barr's Slides](https://www.slideshare.net/gis_todd/foss4g-2017-spatial-sql-for-rookies)
 
