@@ -238,7 +238,7 @@ Ezzel megkaptuk a *flowlines* elemeinek hosszát.  Ez nem volt túl informatív 
 SELECT fcode, SUM(ST_Length(geometry)) FROM flowlines GROUP BY fcode;
 ```
 
-### Terüelt
+### Terület
 
 Először is vessünk egy pillantást a watershed poligon táblázatunkra:
 
@@ -261,42 +261,42 @@ SELECT name, ST_Area(geometry) AS area FROM watersheds;
 ## Vetületek
 Mivel térbeli adatokkal dolgozunk, tudnunk kell kezelni a vetületeket.
 
-### Set the Projection
-When you imported your data into Spatialite, it asked you what the SRID (EPSG Code) was for your data.  It's easy to forget to do this or to put in the wrong one if you're in a hurry.  If you discover that you've made a mistake, you don't need to re-import the table; you can set the SRID to the correct projection with an update command.  
+### Vetület beállítása
+Amikor importáltuk az adatokat a SpatiaLite-ba, a rendszer rákérdezett, hogy mi a hozzájuk tartozó SRID (EPSG kód).  Ezt a lépést könnyen figyelmen kívül hagyhatjuk, vagy rosszat adatot adhatunk meg nagy sietségünkben.  Ha kiderül, hogy hiányzik vagy hibás ez az adat, nem kell újra importálni a táblázatot; egy frissítési paranccsal beállíthatjuk az SRID-t a megfelelő vetületre.  
 
-To check your projection, you can ask the database to look in one of its internal tables. For our data, it looks like this:
+A vetület ellenőrzéséhez megkérhetjük az adatbázist, hogy nézzen bele valamelyik belső táblájába. Az adatainkkal ez a következőképpen néz ki:
 
 ```SQL
 SELECT * FROM geometry_columns
 WHERE f_table_name = 'flowlines';
 ```
 
-For our data, setting the projection would look like this: 
+A vetület beállítása a következőképpen néz ki: 
 
 ```SQL
 UPDATE flowlines SET geometry = SetSRID(geometry, 3310);
 ```
 
-This query replaces the contents of the *geometry* column with the results of the SetSRID command.  In our case, it doesn't really do anything new since we had our projection set correctly, but you should know how to do this, so we did.
+Ez a lekérdezés lecseréli a *geometry* oszlop tartalmát a SetSRID parancsban megadottra.  A mi esetünkben ez nem igazán jelent semminemű újítást, mivel a vetületet megfelelően állítottuk be, de elvégeztük az utasítást, hogy megismerhessük, hogyan kell.
 
-### Reproject
-To change the projection of a dataset, you need to use the `Transform` or `ST_Transform` command.
+### Vetülettranszformáció
+Az adatkészlet vetületének megváltoztatásához a `Transform` vagy `ST_Transform` parancsot kell használnunk.
 
-Let's transform our watershed data into UTM Zone 10 North, the zone that San Francisco falls into.
+Transzformáljuk át a vízgyűjtők adatait UTM Zone 10 North vetületbe, ahová San Francisco is tartozik.
 
-First, we'll start with a query that results in a returning information (but doesn't make a new table):
+Először egy lekérdezéssel kezdjük (amely nem hoz létre új táblázatot):
 
 ```SQL
 SELECT pk_uid, huc8, name, geometry FROM watersheds;
 ```
 
-We have a table with a subset of the columns from the original watersheds table.  Now let's work on transforming the *geom* column.  We'll add a function around the *geometry* column to reproject the data.  26910 is the SRID for UTM Zone 10 N.
+Van tehát a lekérdezés eredményeként egy táblázatunk, ami az eredeti, vízgyűjtőket tartalmazó táblázat oszlopainak egy részhalmaza.  Most következik a *geom* oszlop átalakítása.  A *geometry* oszlophoz egy függvényt rendelünk az adatok vetülettranszformációjához.  Az UTM Zone 10 North vetület SRID száma 26910.
 
 ```SQL
 SELECT pk_uid, huc8, name, ST_Transform(geometry, 26910) FROM watersheds;
 ```
 
-It may look like nothing happened, but the column heading on the *geometry* column should have changed.  Finally, we'll want do something to keep this data.  Remember that a SELECT statement just returns information, it doesn't save it.  We have two options.  (1) We could overwrite the *geometry* column of the *watersheds* table, but that will mean the projection won't match the other data we have.  (2) The other option is to make a new table with a different projection.  We can do this by adding a CREATE TABLE statement to the query we already have (adding an alias to the geometry column):
+Úgy tűnhet, semmi sem történt, de a *geometria* oszlop oszlopfejlécének meg kellett változnia.  Végül tennünk kell valamit a transzofrmált adatok megőrzéséért.  Ne feledjük, hogy a SELECT utasítás csak információt jelenít meg, de azt nem menti el.  Két lehetőségünk van.  (1) Felülírhatjuk a *watersheds* tábla *geometry* oszlopát, de így a vetület nem fog egyezni a többi adattal.  (2) A másik lehetőség az, hogy új táblázatot készítünk az új vetülettel.  Ezt úgy tehetjük meg, hogy a már meglévő lekérdezéshez hozzáadunk egy CREATE TABLE utasítást (AS utasítással a geometria oszlopot töltjük fel):
 
 ```SQL
 CREATE TABLE watersheds_utm_10n AS 
@@ -304,22 +304,22 @@ SELECT pk_uid, huc8, name, ST_Transform(geometry, 26910) AS geometry
 FROM watersheds;
 ```
 
-To see the new table in the list, we'll need to refresh our database.  On the left panel, right click on "User Data" and select *Refresh*.  Now we can see the table, but it's just a table.  Notice that the icon is different from the other tables.  The database doesn't seem to know the table is actually polygons.
+Ahhoz, hogy az új táblázat megjelenjen a listában, frissítenünk kell az adatbázisunkat.  A bal oldali panelen kattintsunk jobb gombbal a "User Data" ("Felhasználói adatok") elemre, és válasszuk a *Refresh* (Frissítés) lehetőséget.  Most már láthatjuk a táblát, de ez csak egy tábla.  Az ikon eltér a többi táblától.  Úgy tűnik, hogy az adatbázis nem tudja, hogy a tábla valójában poligonok összessége.
 
-```SELECT * FROM watersheds_utm_10n;``` Shows that all the columns we asked for, including the *geometry* column are there.  What's going on?  We need to recover the geometry column so the database will recognize the table as a spatial table.
+```SELECT * FROM watersheds_utm_10n;``` Mutatja, hogy az összes oszlop, amit lekértünk, beleértve a *geometria* oszlopot is, létezik.  Mi történik?  Helyre kell állítanunk a geometriai oszlopot, hogy az adatbázis térbeli táblaként ismerje fel a táblát.
 
 ```SQL
 SELECT RecoverGeometryColumn('watersheds_utm_10n', 'geometry', 26910, 'MULTIPOLYGON', 'XY');
 ```
 
-This query will return a single column and row with the number 1 in the only cell.  If it returns 0, the query didn't work.  
+Ez a lekérdezés egyetlen oszlopot és sort ad vissza, a cellában 1-es számmal.  Ha 0-t ad vissza, akkor a lekérdezés nem működött.  
 
-Now we need to vacuum the database (yes, that sounds a little odd).  Run the command ```VACUUM;``` in the SQL Query panel.  This will clean up any issues created by all the changes we just made to the database.
+Most ki kell porszívózni az adatbázist (igen, ez kicsit furcsán hangzik).  Futtassuk a ```VACUUM;``` utasítást az SQL Query panelben.  Ezzel kiküszöböljük az adatbázison végzett módosítások által okozott problémákat.
 
-You may need to refresh your database list again before the icon will change.
+Előfordulhat, hogy újra frissítenünk kell az adatbázislistát, hogy megváltozzon az ikon.
 
-## Spatial Join
-Spatial joins allow us to combine information from one table with another based on the location associated with each record.  When we write a query involving two or more tables, we need to specify which table any column names come from.  We do this by giving the table name before the column - ```table.column``` .  Let's see if we can figure out which watershed each of our flowlines is in:
+## Térbeli csatolás
+A térbeli csatolások lehetővé teszik számunkra, hogy az egyes rekordokhoz társított hely alapján egyesítsük az egyik táblából származó információkat egy másik tábla rekordjaival.  Amikor két vagy több táblát tartalmazó lekérdezést írunk, meg kell adnunk, hogy az oszlopnevek melyik táblából származnak. Ezt úgy tehetjük meg, hogy az oszlop neve előtt megadjuk a tábla nevét  - ```tábla.oszlop``` .  Lássuk, le tudjuk-e kérni, hogy az egyes áramlási vonalaink melyik vízgyűjtő területén helyezkednek el:
 
 ```SQL
 SELECT flowlines.*, watersheds.name AS watershed_name
@@ -327,16 +327,16 @@ FROM flowlines, watersheds
 WHERE ST_Contains(watersheds.geometry, flowlines.geometry);
 ```
 
-Your table should look just like your *flowlines* table, but we've added the *NAME* column from our *watersheds* table (but called it "Watershed_Name" because this will make more sense if we needed to use the this data later and didn't remember where this information came from). 
+A táblázatnak ugyanúgy kell kinéznie, mint a *flowlines* táblának, de hozzáadtuk a *NAME* oszlopot a *watersheds* táblázatunkból (de "Watershed_Name"-nek elnevezve, mert így több értelme lesz, ha később fel kell használnunk ezeket az adatokat, és nem emlékeznénk, honnan származik ez az információ). 
 
-ST_Contains tells us if a line is completely within a particular watersheds polygon.  How would you change this query to identify which watershed each line *intersects* rather than is *contained by*? Hint: [SpatiaLite Function Reference List](http://www.gaia-gis.it/gaia-sins/spatialite-sql-4.2.0.html) 
+ST_Contains megmondja, hogy egy vonal teljesen egy adott vízgyűjtő poligonon belül van-e.  Hogyan változtatnánk meg ezt a lekérdezést annak meghatározására, hogy az egyes vonalak melyik vízgyűjtőt *metszik*, nem pedig *tartalmazzák*? Segítség: [SpatiaLite Function Reference List](http://www.gaia-gis.it/gaia-sins/spatialite-sql-4.2.0.html) 
 
-## Views vs. Tables
-We've discussed that one of the big reasons to use a database is not needing to save a bunch of intermediate data products.  You just keep your data in tables and you write queries to combine them in various ways.  But what if you find yourself needing the results a particular query quite often?  Do you save a table?  There's another option: the view.  A view is like a saved query.  It behaves like a table so you can call it in other queries or view it in QGIS, but the records in the table are generated by running a query rather than storing the same data over again.
+## Nézetek vs. Táblák
+Volt már szó arról, hogy az adatbázis használatának egyik fő oka az, hogy nem kell menteni egy csomó köztes adatterméket.  Csak táblázatokban tároljuk az adatokat, és lekérdezéseket írunk, hogy különféle módon kombináljuk őket.  De mi van akkor, ha gyakran szükségünk van egy adott lekérdezés eredményeire?  Mentünk egy táblát?  Van egy másik lehetőség: a nézetek.  Egy nézet olyan, mint egy elmentett lekérdezés.  Úgy viselkedik, mint egy tábla, így más lekérdezésekben is meghívhatjuk, vagy megtekinthetjük a QGIS-ben, de a tábla rekordjai egy lekérdezés futtatásával jönnek létre, ahelyett, hogy ugyanazokat az adatokat újra eltárolnánk.
 
-Let's make a view!  Let's say we want to have a view that contains all the rivers (so, FTYPE = 460, like before) that are in the Tomales-Drake Bays watershed and let's put the watershed name into the table as well.
+Készítsünk egy nézetet! Tegyük fel, hogy szeretnénk egy olyan nézetet, amely az összes olyan folyót tartalmazza (tehát FTYPE = 460, mint eddig), amelyek a Tomales-Drake Bays vízgyűjtő területén folynak, és tegyük be a vízgyűjtő nevét is a táblázatba.
 
-First, let's make a query to make sure we're getting the information we want.
+Először is végezzünk egy lekérdezést, hogy megbizonyosodjunk arról, hogy a kívánt információkat kapjuk-e meg.
 
 ```SQL
 SELECT flowlines.*, watersheds.name AS watershed_name
@@ -346,7 +346,7 @@ AND ftype = 460
 AND watersheds.name LIKE 'Tomales-Drake Bays';
 ```
 
-That query looks like what we want.  Let's make it into a view.  View creation sytax is really similar to the way you make a table:
+Ez a lekérdezés úgy néz ki, mint amilyet szeretnénk.  Csináljunk belőle egy nézetet.  A nézet létrehozásának szintaxisa nagyon hasonlít a táblázat létrehozásához:
 
 ```SQL
 CREATE VIEW rivers_tomales AS
@@ -357,7 +357,8 @@ AND ftype = 460
 AND watersheds.name LIKE 'Tomales-Drake Bays';
 ```
 
-Refresh your table list to see if on the left side of the screen.  This is a non-spatial view.  To have the database recognize it as a spatial view, we need one more step that registers the view in the table that keeps track of which views are spatial.  (If this sounds complicated, just file this away as a step that needs to get done.)
+Frissítsük a táblázatlistát, majd ellenőrizzük, hogy megjelent-e a képernyő bal oldalán.  
+Ez egy nem térbeli nézet.  Ahhoz, hogy az adatbázis térbeli nézetként ismerje fel, szükségünk van még egy lépésre, amely regisztrálja a nézetet a táblázatban, amely a térbeli nézeteket tartalmazza.  (Ha ez bonyolultnak hangzik, egyszerűen vessük el ezt a lépést).
 
 ```SQL
 INSERT INTO views_geometry_columns
@@ -365,19 +366,19 @@ INSERT INTO views_geometry_columns
 VALUES ('rivers_tomales', 'geometry', 'pk_uid', 'flowlines', 'geometry', 0);
 ```
 
-What does this query do?  I'll break it down.
+Mit csinál ez a lekérdezés?  Íme.
 
-```INSERT INTO views_geometry_columns``` tells the databse to put data into the *views_geometry_columns* table.  This is a table that comes standard with Spatialite databases.  It was there as soon as we made the database.  It tells the rest of the databse which views are spatial.  There's a similar table for listing spatial tables.  
+```INSERT INTO views_geometry_columns``` utasítja az adatbázist, hogy helyezze az adatokat a *views_geometry_columns* táblába.  Ez egy olyan tábla, amely a SpatiaLite adatbázisok részét képezik.  Már akkor ott volt, amikor elkészítettük az adatbázist.  Ez a tábla közli az adatbázis többi részével, hogy mely nézetek térbeliek.  Van egy hasonló tábla a térbeli táblázatok listázásához.  
 
-```(view_name, view_geometry, view_rowid, f_table_name, f_geometry_column, read_only)``` is the list of columns we want to put information into in the *views_geometry_columns* table.  We'll be making a new row of data in this table, and these are the columns where that data is going to go.
+```(view_name, view_geometry, view_rowid, f_table_name, f_geometry_column, read_only)``` azoknak az oszlopoknak a listája, amelyekbe információkat szeretnénk elhelyezni a *views_geometry_columns* táblában.  Egy új adatsort hozunk létre a táblázatban, és ezek azok az oszlopok, amelyekbe az adatok kerülnek.
 
 ```VALUES ('rivers_tomales', 'geometry', 'pk_uid', 'flowlines', 'geometry', 0)``` 
 
-*VALUES* says to the database, "here is the list of items to put in the columns I told you about in the last line", then we put the list of things in parentheses.  So 'rivers_tomales' (the new table name) will go into the 'view_name' field. 'geometry' is the geometry column for the view so it goes into the 'view_geometry' field of the table. 'flowlines' is the table that our 'rivers_tomales' view inherits its spatial data from and it has a geometry column called 'geometry' as well.  Finally, 'read_only' takes either a 0 to make the table read-only or 1 to make it writable.  Read-only is a good choice here since we won't be adding or changing the view's contents.
+*VALUES* közli az adatbázissal, hogy "itt van azoknak az elemeknek a listája, amelyeket a fentebb felsorolt oszlopokba kell illeszteni", majd a zárójelbe kerülnek a konkrét értékek.  Tehát a 'rivers_tomales' (az új táblázat neve) a 'view_name' mezőbe kerül. A 'geometry' a geometria oszlopa a nézetnek, tehát ez a táblázat 'view_geometry' mezőjébe kerül.  A 'flowlines' az a táblázat, amelyből a 'rivers_tomales' nézet megörökli a térbeli adatokat, van egy 'geometry' nevű oszlopa is.  Vegül a 'read_only' mező értéke vagy 0, hogy a táblázat csak olvasható legyen, vagy 1, hogy írható is legyen.  Az írásvédettség jó választás ebben a helyzetben, mivel nem adunk hozzá semmit, vagy módosítjuk a nézet tartalmát.
 
-Refresh your table list to see that rivers_tomales is now a spatial view. 
+Frissítsük a táblázatok listáját, így látható lesz, hogy a rivers_tomales immmár egy térbeli nézet.  
 
-```SELECT * FROM rivers_tomales;``` to see your new view.  It will function just like a table.
+```SELECT * FROM rivers_tomales;``` hogy láthassuk az új nézetet.  Úgy működik, mint egy táblázat.
 
 
 ## Táblák megjelenítése QGIS-ben
