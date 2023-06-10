@@ -83,7 +83,7 @@ We'll be working with SpatiaLite, because it works on all the common computer op
 
 ## Adatok
 
-Az adatok, amelyekkel dolgozunk, a San Francisco-öböl vízgyűjtőjére vonatkozó hidrológiával kapcsolatosak.
+Az adatbázis, amellyel dolgozunk, a San Francisco-öböl vízgyűjtőjének vízrajzi adatait tartalmazza.
 
 A következő adatfájlokat kell letölteni az adatmappából, vagy [innen](https://ucdavis.box.com/s/wb5ui86q8z7ppylvcqb8o8pqqawpsj43) (kattintsunk a letöltés gombra a jobb felső sarokban az összes adat .zip fájblan való letöltéséhez):
 
