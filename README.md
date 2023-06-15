@@ -3,16 +3,6 @@ Spatial SQL bevezető tanfolyam SpatiaLite használatával.
 
 **Szerzők:** [Michele Tobias](https://github.com/MicheleTobias) & [Naomi Kalman](https://github.com/nbkalman)
 
-## Workshop Description
-This workshop is intended to give participants an introduction to working with **spatial data** using SQL. We will work with a graphical user interface (GUI) and explore some examples of common analysis processes as well as present participants with resources for continued learning.  This workshop will give participants a solid foundation on which to build further learning.
-
-## Learning Objectives
-By the end of this workshop, participants will be able to
-* Import data into an spatialite database
-* Write queries to answer questions about spatial data
-* Understand the difference between attribute queries and geometry queries
-* View spatial tables and views in QGIS
-
 ## A tanfolyamról
 A tanfolyam célja, hogy a résztvevők megismerkedjenek a **téradatokkal** való munkavégzéssel SQL használatával. Grafikus felhasználói felülettel (GUI) fogunk dolgozni, és megismerünk néhány példát a gyakori elemzési folyamatokra, valamint forrásokat biztosítunk a résztvevőknek a folyamatos tanuláshoz. Ez a tanfolyam jó kiindulási alapot ad a résztvevőknek a továbblépéshez.
 
