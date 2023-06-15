@@ -26,9 +26,9 @@ A tanfolyam végére a résztvevők képesek lesznek
 ## Előkövetelmények
 Az SQL bevezető ismerete ajánlott, de nem kötelező. Például a SELECT utasítások összeállításának ismerete SQL használatával és a táblák összekapcsolásának általános ismerete jó segítség lehet. Az SQL alapismeretekkel nem rendelkező tanulók számára javasoljuk, hogy tekintsék meg a DataLab [Introduction to Databases and Data Storage Technologies](https://ucdavisdatalab.github.io/workshop_intro_to_data_storage/) anyagait, amely bemutatja az adatbázisok fogalmát, és [ Intro to SQL for Querying Databases](https://ucdavisdatalab.github.io/workshop_intro_to_sql/), amely megtanítja az adatok SQL használatával történő lekérdezésének alapjait.
 
-## Software
+## Szoftver
 
-**Install SpatiaLite GUI:**  The instructions for intalling SpatiaLite GUI varies depending on your operating sytsem.  We've provided a [guide to installing the software](https://github.com/MicheleTobias/Spatial_SQL/blob/master/Install.md). These workshop materials were most recently written for Spatialite version 5.0.0 and Spatialite GUI 2.1.0-beta1.
+**A SpatiaLite GUI telepítése:**  A SpatiaLite GUI telepítési útmutatója operációs rendszerenként eltérő.  Ehhez adunk segítséget [a telepítési útmutatóban](https://github.com/kaliczp/Spatial_SQL/blob/master/Install.md). A tanfolyam anyaga a Spatialite 5.0.0 és Spatialite GUI 2.1.0-beta1 verziójához készült.
 
 **Install QGIS:** You should have installed QGIS version 3.24 from [QGIS.org](https://qgis.org/en/site/forusers/download.html). Recent older versions of QGIS will also suffice.  We'll be using QGIS to visualize our spatial data tables that we import into our SpatiaLite database.
 
