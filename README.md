@@ -66,15 +66,15 @@ A spatial join is an example of a spatial operation that you may have performed 
 ## What makes this challenging?
 If you're a GIS user, you're probably used to a graphical user interface (GUI) where you can see your data, have tools with guided interfaces, and can see the results of your processing immediately.  These aren't things you get with a typical database manager tool, however, we can connect our database to QGIS so we can see our results and, with practice, you will get used to the typical workflow and seeing everything won't be so necessary.
 
-## Databases that support Spatial SQL:
+## A Spatial SQL-t támogató adatbáziskezelők:
 * Oracle
 * MySQL
 * SQL Server
 * SpatiaLite
-* PostGRES with the PostGIS extension
-* Others too!
+* PostGRES PostGIS kiterjesztéssel
+* és sok további rendszer!
 
-We'll be working with SpatiaLite, because it works on all the common computer operating systems and is fairly easy to install.  Once you learn the basics, you can choose the database program that best fits your needs.
+A tanfolyam során SpatialLite-al fogunk dolgozin, mert minden általánosan elterjedt operációs renszeren működik és a telepítése egyszerű. Miután az alapokat megismertük, később kiválaszthatjuk azt az adatbáziskezelő renszert, amely legjobban illeszkedik a feladathoz.
 
 
 ---------------------------------------------
