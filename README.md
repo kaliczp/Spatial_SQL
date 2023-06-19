@@ -23,38 +23,38 @@ Az SQL bevezető ismerete ajánlott, de nem kötelező. Például a SELECT utas�
 **Install QGIS:** You should have installed QGIS version 3.24 from [QGIS.org](https://qgis.org/en/site/forusers/download.html). Recent older versions of QGIS will also suffice.  We'll be using QGIS to visualize our spatial data tables that we import into our SpatiaLite database.
 
 
-# Concepts
+# Fogalmak
 
-## What is a database?
-A database is a set of data in tables that are related to each other in some way.  That's it.  **A database is just a collection of related tables.**
+## Mi az adatbázis?
+Az adatbázis olyan táblázatokban lévő adatok halmaza, amelyek valamilyen módon kapcsolódnak egymáshoz. Azaz; **Az adatbázis kapcsolódó táblák gyűjteménye.**
 
-Generally each table can be connected to another table by a column that both tables have that store the information to match up the rows.  This column is called a **key**.  For example, your student or employee ID number is a key commonly used on campus.
+Általában minden tábla összekapcsolható egy másik táblával egy olyan oszlop segítségével, amellyel mindkét tábla rendelkezik, és amely tárolja a sorok egyeztetéséhez szükséges információkat. Ezt az oszlopot **kulcsnak** nevezik. Például hallgatók vagy alkalmazottak azonosítószáma az egyetemeken gyakran használt kulcs.
 
-If you've done GIS, you already use a database.  A shapefile is essentially just a fancy a table. And if you're ever joined a .csv table to a shapefile, you've performed a database process called a join. Using multiple spatial datasets in a GIS relates the data by location, if not by tabular data.
+Ha térinformatikai rendszerben dolgozunk, akkor már adatbázist használunk. A shapefile lényegében csak egy kidíszitett táblázat. És ha összekapcsolunk egy .csv táblázatot egy shapefájllal, akkor egy összekapcsolás (join) nevű adatbázis műveletet végzünk. Ha több térbeli adatkészletet használunk egy térinformatikai rendszerben, akkor az az adatokat táblázat helyett koordináta szerint kapcsolja össze.
 
-## What is a Spatial Database?
-A spatial database is a normal database (i.e. a set of related tables) but at least one of the tables has a column that holds the spatial information commonly called the "geometry".  The geometry information is stored as a Binary Large Object (BLOB).  The geometry information allows us to relate the tables to each other based on their location and also to perform spatial analysis on our data.
+## Mi az a térbeli adatbázis?
+A térbeli adatbázis egy közönséges adatbázis (azaz kapcsolódó táblák halmaza), de legalább az egyik táblának van egy oszlopa, amely tartalmazza a térbeli információkat, amelyeket általában "geometriának" neveznek. A geometriai információkat a rendszer bináris nagy objektumként (Binary Large Object = BLOB) tárolja. A geometria lehetővé teszi a táblázatok adatainak összekapcsolását azok térbeli elhelyezkedése alapján, valamint lehetővé teszik az adatok térbeli elemzését.
 
-Below is an example of a database entity relationship diagram for tables in an example (imaginary, yet plausible) spatial database.  At least one column in each table relates to a column in another table (indicated in this diagram by a line drawn between the two columns).  Documenting a database with a diagram like this is common practice.  It provides a quick visual reference to the data contained in each table and how the tables relate to each other. The `city` table is a spatial table. The `geometry` column provides the spatial information that allows the city polygons to be mapped.  The other tables are tabular data that can be joined to the spatial table using the key, in this case, the Federal Information Processing System (FIPS) Code, a system that assigns unique numeric codes to geographic entities such as cities, counties, and states. FIPS codes help us have a standardized key that prevents mismatches from variations in names (such as "Davis" vs. "City of Davis").
+Az alábbiakban egy példa látható egy adatbázis-entitás-kapcsolati diagramra (elképzelt, mégis valószerű) térbeli minta-adatbázis. Minden táblázatban legalább egy oszlop egy másik táblázat oszlopához kapcsolódik (a diagramon a két oszlop közé húzott vonal jelzi). Egy adatbázis ilyen diagrammal történő dokumentálása általános gyakorlat. Gyors vizuális hivatkozást biztosít az egyes táblákban található adatokhoz és a táblázatok egymáshoz való viszonyához. A "város (city)" tábla egy térbeli táblázat. A "geometria (geometry)" oszlop azokat a térinformációkat tartalmazza, amelyek lehetővé teszik a várost leíró poligonok leképezését. A többi táblázat olyan táblázatos adat, amely a térbeli táblához a kulccsal kapcsolható, jelen esetben egy kóddal (Federal Information Processing System = FIPS), egy olyan rendszerrel, amely egyedi numerikus kódokat rendel a földrajzi entitásokhoz, például városokhoz, megyékhez és államokhoz. Ezeknek a FIPS kódoknak a segítségével egy olyan egyértelmű kulcsot alkalmazhatunk, amely a névváltozatokból eredő ellentmondásokat (például „Davis” és „City of Davis”) kezeli.
 
 ![image](/images/ERD_Example.png)
 
-## What is Spatial SQL?
-SQL stands for "structured query language" and it's a language that allows you to ask questions of a database.  Spatial SQL is regular SQL but with some additional functions that perform spatial analysis.  Spatial SQL functions typically work on the geometry column.
+## Mi az a térbeli SQL?
+Az SQL a "structured query language = strukturált lekérdezési nyelv" rövidítése, egy olyan nyelvé, amellyel kérdéseket tehet fel egy adatbázissal kapcsolatban. A térbeli SQL normál SQL, de néhány további funkcióval is rendelkezik, amelyekkel térbeli elemzést végezhetünk. A térbeli SQL-függvények általában a geometria oszlopon működnek.
 
-If you've ever written an attribute query in ArcGIS or QGIS, you've worked with SQL.  Example: Hey GIS program, please highlight all the records in my attribute table that have "Yolo" in the "county" column!  In SQL, we would write `SELECT * FROM city WHERE county = 'Yolo';`  It's actually quicker to write that query than to fill out the interface in the GIS.
+Ha attribútumlekérdezést használunk ArcGIS-ben vagy QGIS-ben, akkor SQL-lel dolgozunk. Egy egyszerű példa szavakkal leírva: Kedves térinformatikai program, kérem, jelölje ki az attribútumtáblámban az összes olyan rekordot, amelynél a "megye" oszlopban "Yolo" szerepel! SQL-ben azt írnánk, hogy `SELECT * FROM city WHERE megye = 'Yolo';` Valójában gyorsabb a lekérdezés megírása, mint a GIS-ben lévő lekérdező-felület kitöltése.
 
-A spatial join is an example of a spatial operation that you may have performed in a GIS that can also be performed using SQL. For example, if we had a dataset of business locations, we might query which businesses are inside of city boundaries. `SELECT * from businesses, cities WHERE ST_Intersects(businesses.geometry, city.geometry);` It's much quicker to write the query than fill out the spatial join interface.
+A térbeli összekapcsolás (join) jó példa térbeli műveletre, amelyet egy térinformatikai rendszerben is, és SQL használatával is végrehajtható. Például, ha van egy térbeli adatbázisunk üzletekről, akkor lekérdezhetjük, hogy mely vállalkozások vannak a város határain belül. `SELECT * from businesses, cities WHERE ST_Intersects(businesses.geometry, city.geometry);` Sokkal gyorsabb a lekérdezés megírása, mint a GIS program térbeli összekapcsolási felületének kitöltése.
 
-## Why should you learn to work with spatial databases and spatial SQL?
-* It's a good way to work with large amounts of data
-* Typically faster to run a process in a spatial database than in a desktop GIS program
-* Store lots of data (compare with shapefile's 70m row limit)
-* One database file stores many, many tables --> easier data management
-* Write a query instead of making a new file (no exporting of intermediate results to shapefile necessary!)
+## Miért érdemes megtanulni téradatbázisokkal és térbeli SQL-lel dolgozni?
+* Ez egy jó módja annak, hogy nagy mennyiségű adattal dolgozzon
+* Általában gyorsabban fut egy folyamat egy térbeli adatbázisban, mint egy asztali GIS programban
+* Sok adat tárolása (hasonlítsa össze a shapefile 70 méteres sorkorlátjával)
+* Egy adatbázisfájl sok-sok táblát tárol --> könnyebb adatkezelés
+* Írjon lekérdezést ahelyett, hogy új fájlt készítene (nincs szükséges a közbenső eredmények exportálása alakfájlba!)
 
-## What makes this challenging?
-If you're a GIS user, you're probably used to a graphical user interface (GUI) where you can see your data, have tools with guided interfaces, and can see the results of your processing immediately.  These aren't things you get with a typical database manager tool, however, we can connect our database to QGIS so we can see our results and, with practice, you will get used to the typical workflow and seeing everything won't be so necessary.
+## Mi teszi ezt kihívást?
+Ha Ön GIS-felhasználó, valószínűleg hozzászokott a grafikus felhasználói felülethez (GUI), ahol láthatja adatait, irányított felülettel rendelkező eszközökkel rendelkezik, és azonnal láthatja a feldolgozás eredményét. Ezek nem olyan dolgok, amiket egy tipikus adatbázis-kezelő eszközzel kapsz, de összekapcsolhatjuk adatbázisunkat a QGIS-sel, így láthatjuk az eredményeinket, és gyakorlással megszokhatod a tipikus munkafolyamatot, és látni fogod, hogy minden nem lesz így. szükséges.
 
 ## A Spatial SQL-t támogató adatbáziskezelők:
 * Oracle
