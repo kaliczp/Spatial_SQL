@@ -20,8 +20,7 @@ Az SQL bevezető ismerete ajánlott, de nem kötelező. Például a SELECT utas�
 
 **A SpatiaLite GUI telepítése:**  A SpatiaLite GUI telepítési útmutatója operációs rendszerenként eltérő.  Ehhez adunk segítséget [a telepítési útmutatóban](https://github.com/kaliczp/Spatial_SQL/blob/Hun/Install.md). A tanfolyam anyaga a Spatialite 5.0.0 és Spatialite GUI 2.1.0-beta1 verziójához készült.
 
-**Install QGIS:** You should have installed QGIS version 3.24 from [QGIS.org](https://qgis.org/en/site/forusers/download.html). Recent older versions of QGIS will also suffice.  We'll be using QGIS to visualize our spatial data tables that we import into our SpatiaLite database.
-
+**A QGIS telepítése:** Telepítenie kellett a QGIS aktuális verzióját a [QGIS.org](https://qgis.org/en/site/forusers/download.html) webhelyről. A QGIS régebbi verziói is elegendőek lesznek. QGIS-t fogunk használni a SpatiaLite adatbázisunkba importált téradattáblázataink megjelenítésére.
 
 # Fogalmak
 
