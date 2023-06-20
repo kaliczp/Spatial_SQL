@@ -53,7 +53,7 @@ A térbeli összekapcsolás (join) jó példa térbeli műveletre, amelyet egy t
 * Írjon lekérdezést ahelyett, hogy új fájlt készítene (nincs szükséges a közbenső eredmények exportálása alakfájlba!)
 
 ## Mi teszi ezt kihívást?
-Ha Ön GIS-felhasználó, valószínűleg hozzászokott a grafikus felhasználói felülethez (GUI), ahol láthatja adatait, irányított felülettel rendelkező eszközökkel rendelkezik, és azonnal láthatja a feldolgozás eredményét. Ezek nem olyan dolgok, amiket egy tipikus adatbázis-kezelő eszközzel kapsz, de összekapcsolhatjuk adatbázisunkat a QGIS-sel, így láthatjuk az eredményeinket, és gyakorlással megszokhatod a tipikus munkafolyamatot, és látni fogod, hogy minden nem lesz így. szükséges.
+Ha Ön GIS-felhasználó, valószínűleg hozzászokott a grafikus felhasználói felülethez (GUI), ahol láthatja adatait, irányított felülettel rendelkező eszközökkel rendelkezik, és azonnal láthatja a feldolgozás eredményét. Ezek nem olyan dolgok, amiket egy tipikus adatbázis-kezelő eszközzel kapsz, de összekapcsolhatjuk adatbázisunkat a QGIS-sel, így láthatjuk az eredményeinket, és gyakorlással megszokhatod a tipikus munkafolyamatot, és látni fogod, hogy minden nem lesz szükséges.
 
 ## A Spatial SQL-t támogató adatbáziskezelők:
 * Oracle
