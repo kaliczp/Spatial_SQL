@@ -46,14 +46,14 @@ Ha attribútumlekérdezést használunk ArcGIS-ben vagy QGIS-ben, akkor SQL-lel 
 A térbeli összekapcsolás (join) jó példa térbeli műveletre, amelyet egy térinformatikai rendszerben is, és SQL használatával is végrehajtható. Például, ha van egy térbeli adatbázisunk üzletekről, akkor lekérdezhetjük, hogy mely vállalkozások vannak a város határain belül. `SELECT * from businesses, cities WHERE ST_Intersects(businesses.geometry, city.geometry);` Sokkal gyorsabb a lekérdezés megírása, mint a GIS program térbeli összekapcsolási felületének kitöltése.
 
 ## Miért érdemes megtanulni téradatbázisokkal és térbeli SQL-lel dolgozni?
-* Ez egy jó módja annak, hogy nagy mennyiségű adattal dolgozzon
+* Ez egy jó módja annak, hogy nagy mennyiségű adattal dolgozzunk
 * Általában gyorsabban fut egy folyamat egy térbeli adatbázisban, mint egy asztali GIS programban
-* Sok adat tárolása (hasonlítsa össze a shapefile 70 méteres sorkorlátjával)
+* Sok adat tárolása (összehasonlítva a shapefile 70 méteres sorkorlátjával)
 * Egy adatbázisfájl sok-sok táblát tárol --> könnyebb adatkezelés
-* Írjon lekérdezést ahelyett, hogy új fájlt készítene (nincs szükséges a közbenső eredmények exportálása alakfájlba!)
+* Lekérdezés írható új fájl létrehozása helyett (nem szükséges a közbenső eredmények exportálása shp fájlba!)
 
-## Mi teszi ezt kihívást?
-Ha Ön GIS-felhasználó, valószínűleg hozzászokott a grafikus felhasználói felülethez (GUI), ahol láthatja adatait, irányított felülettel rendelkező eszközökkel rendelkezik, és azonnal láthatja a feldolgozás eredményét. Ezek nem olyan dolgok, amiket egy tipikus adatbázis-kezelő eszközzel kapsz, de összekapcsolhatjuk adatbázisunkat a QGIS-sel, így láthatjuk az eredményeinket, és gyakorlással megszokhatod a tipikus munkafolyamatot, és látni fogod, hogy minden nem lesz szükséges.
+## Miért lehet ez nehéz?
+GIS-felhasználóként, valószínűleg hozzászoktunk a grafikus felhasználói felülethez (GUI), ahol láthatjuk adatainkat, célraszabott eszközöket használhatunk, és azonnal láthatjuk a feldolgozás eredményét. Ezeket a funkciókat egy tipikus adatbázis-kezelő eszköz nem nyújtja, de összekapcsolhatjuk adatbázisunkat a QGIS-sel, így láthatjuk az eredményeinket, és gyakorlással megszokhatjuk a tipikus munkafolyamatot, és láthatjuk fogod, hogy mindenre nem is lesz szükség.
 
 ## A Spatial SQL-t támogató adatbáziskezelők:
 * Oracle
@@ -95,7 +95,7 @@ Indítsuk el a SpatiaLite programot:
 1. Indítsuk el a SpatiaLite programot a `spatialite_gui.exe` fájlra kattintva.
 
 
-## Adatázis létrehozása
+## Adatbázis létrehozása
 Az adatbázis felfogható úgy is, mint egy mappa, amely az egymáshoz kapcsolódó táblákat tartalmazza.  Ebbe az adatbázisba nem töltünk fel olyan adatokat, amelyek nem kapcsolódnak a többi adathoz (lehetne, de nem ez a lényege egy adatbázisnak).
 
 Létrehozunk egy új, üres adatbázist, melyben tárolhatjuk az adattáblákat:
