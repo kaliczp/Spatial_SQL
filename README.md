@@ -164,7 +164,7 @@ Megjegyzés: hagyományosan a szintaxisban részt vevő szavak, például a `SEL
 SELECT * FROM flowlines WHERE ftype = 460; 
 ``` 
 
-Ez a lekérdezés azokra a sorokra korlátozza az eredményt, ahol az *ftype* oszlop értéke 460, ami a természetes folyóknak és patakoknak (nem csatornáknak) felel meg..  A "where" (ahol) ebben az esetben **NEM** helyszínt, hanem egy feltételt közvetít.
+Ez a lekérdezés azokra a sorokra korlátozza az eredményt, ahol az *ftype* oszlop értéke 460, ami a természetes folyóknak és patakoknak (nem csatornáknak) felel meg.  A "where" (ahol) ebben az esetben **NEM** helyszínt, hanem egy feltételt közvetít.
 
 ### Függvény hozzáadása: 
 
