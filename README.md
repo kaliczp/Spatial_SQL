@@ -176,7 +176,7 @@ Itt hozzáadtuk a COUNT() (számol) függvényt.  Megkértük az adatbáziskezel
 
 ### Adatok összegzése
 
-What if we wanted to know how many lines there were of each *ftype*?
+Mit kellene tegyünk, ha tudni akarnánk, hogy hány sor van az egyes *ftype* értékekből?
 
 ```SQL
 SELECT ftype, COUNT(pk_uid) FROM flowlines GROUP BY ftype;
