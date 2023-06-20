@@ -25,7 +25,7 @@ Az SQL bevezető ismerete ajánlott, de nem kötelező. Például a SELECT utas�
 # Fogalmak
 
 ## Mi az adatbázis?
-Az adatbázis olyan táblázatokban lévő adatok halmaza, amelyek valamilyen módon kapcsolódnak egymáshoz. Azaz; **Az adatbázis kapcsolódó táblák gyűjteménye.**
+Az adatbázis olyan táblázatokban lévő adatok halmaza, amelyek valamilyen módon kapcsolódnak egymáshoz. Azaz; **az adatbázis kapcsolódó táblák gyűjteménye.**
 
 Általában minden tábla összekapcsolható egy másik táblával egy olyan oszlop segítségével, amellyel mindkét tábla rendelkezik, és amely tárolja a sorok egyeztetéséhez szükséges információkat. Ezt az oszlopot **kulcsnak** nevezik. Például hallgatók vagy alkalmazottak azonosítószáma az egyetemeken gyakran használt kulcs.
 
@@ -192,7 +192,7 @@ SELECT ftype, COUNT(pk_uid) AS count_lines FROM flowlines GROUP BY ftype;
 
 Ez különösen akkor hasznos, ha olyan emberek számára készítünk táblázatot, akik nem ismerik az adatokat vagy az SQL-t, vagy ha az oszlop konkrét névvel kell rendelkezzen.
 
-Az előbbiekben megvizsgáltunk néhány lehetőséget a nem térbeli adatok lekérdezésére.  Bővebb információkért kattints a következő linkre: [Intro to SQL Workshop](https://github.com/MicheleTobias/Workshop-SQL).
+Az előbbiekben megvizsgáltunk néhány lehetőséget a nem térbeli adatok lekérdezésére.  További információ elérhető a következő linken: [Intro to SQL Workshop](https://github.com/MicheleTobias/Workshop-SQL).
 
 ## Példák alapvető térbeli lekérdezésekre:
 
