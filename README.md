@@ -4,7 +4,7 @@ Spatial SQL bevezető tanfolyam SpatiaLite használatával.
 **Szerzők:** [Michele Tobias](https://github.com/MicheleTobias) & [Naomi Kalman](https://github.com/nbkalman)
 
 ## A tanfolyamról
-A tanfolyam célja, hogy a résztvevők megismerkedjenek a **téradatokkal** való munkavégzéssel SQL használatával. Grafikus felhasználói felülettel (GUI) fogunk dolgozni, és megismerünk néhány példát a gyakori elemzési folyamatokra, valamint forrásokat biztosítunk a résztvevőknek a folyamatos tanuláshoz. Ez a tanfolyam jó kiindulási alapot ad a résztvevőknek a továbblépéshez.
+A tanfolyam célja, hogy a résztvevők megismerjék, hogyan dolgozhatnak **téradatokkal** az SQL nyelvet használva. Grafikus felhasználói felülettel (GUI) fogunk dolgozni, és megismerünk néhány példát a gyakori elemzési folyamatokra, valamint további forrásokat biztosítunk a résztvevőknek a folyamatos tanuláshoz. A tanfolyam jó kiindulási alapot ad a továbblépéshez is.
 
 ## Tanulási célok
 A tanfolyam végére a résztvevők képesek lesznek
